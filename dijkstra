@@ -1,0 +1,100 @@
+#include<bits/stdc++.h>
+#define inf 1<<30
+
+using namespace std;
+
+const int node = 6;
+
+int weight[node][node];
+int dist[node];
+int parent[node];
+
+void dijkstra(int s)
+{
+    dist[s] = 0;
+    parent[s] = -1;
+    priority_queue < pair<int,int>, vector < pair<int,int> >, greater < pair<int,int> > > pq;
+    pq.push({0,s});
+    while(!pq.empty())
+    {
+        pair <int,int> tp = pq.top();
+        pq.pop();
+        int u = tp.second;
+        for(int i=0;i<node;i++)
+        {
+            int v = i;
+            if(weight[u][v] == inf)
+                continue;
+            if(dist[u] + weight[u][v] < dist[v])
+            {
+                dist[v] = dist[u] + weight[u][v];
+                pq.push({dist[v],v});
+                parent[v] = u;
+            }
+        }
+    }
+}
+
+int main()
+{
+    int edge;
+    cin>>edge;
+    for(int i=0;i<node;i++)
+    {
+        for(int j=0;j<node;j++)
+        {
+            if(i==j)
+                weight[i][j] = 0;
+            else
+                weight[i][j] = inf;
+        }
+    }
+    for(int i=1;i<=edge;i++)
+    {
+        int u,v,w;
+        cin>>u>>v>>w;
+        weight[u][v] = w;
+        weight[v][u] = w;
+    }
+    for(int i=0;i<node;i++)
+    {
+        dist[i] = inf;
+        parent[i] = -1;
+    }
+    int s;
+    cin>>s;
+    dijkstra(s);
+    for(int i=0;i<node;i++)
+    {
+        cout<<s<<" -> "<<i<<" : "<<dist[i]<<endl;
+    }
+    stack <int> path;
+    int dest;
+    cin>>dest;
+    int now = dest;
+    while(now != -1)
+    {
+        path.push(now);
+        now = parent[now];
+    }
+    while(!path.empty())
+    {
+        cout<<path.top()<<" ";
+        path.pop();
+    }
+}
+/*
+10
+0 2 10
+0 3 13
+0 1 9
+1 5 8
+1 2 5
+2 3 6
+2 4 7
+3 4 3
+3 5 12
+4 5 5
+0
+*/
+
