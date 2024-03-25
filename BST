@@ -1,0 +1,123 @@
+#include<iostream>
+
+using namespace std;
+
+struct Node{
+    int val;
+    Node *left, *right;
+};
+
+Node* Insert(Node *root, int val)
+{
+    Node *newnode = new Node();
+    newnode->val = val;
+    newnode->left = NULL;
+    newnode->right = NULL;
+    if(root == NULL)
+    {
+        root = newnode;
+        return root;
+    }
+    else
+    {
+        Node* curr_node = root;
+        while(1)
+        {
+            if(val < curr_node->val)
+            {
+                if(curr_node->left != NULL)
+                {
+                    curr_node = curr_node ->left;
+                }
+                else
+                {
+                    curr_node -> left = newnode;
+                    return root;
+                }
+            }
+            else if(val > curr_node->val)
+            {
+                if(curr_node->right != NULL)
+                {
+                    curr_node = curr_node->right;
+                }
+                else
+                {
+                    curr_node->right = newnode;
+                    return root;
+                }
+            }
+        }
+    }
+}
+
+int Search(Node* root, int x)
+{
+    Node* curr_node = root;
+    while(1)
+    {
+        if(x < curr_node ->val)
+        {
+            if(curr_node -> left == NULL)
+                return 0;
+            else
+                curr_node = curr_node -> left;
+        }
+        else if(x > curr_node->val)
+        {
+            if(curr_node->right == NULL)
+                return 0;
+            else
+                curr_node = curr_node -> right;
+        }
+        else
+            return 1;
+    }
+}
+
+void Preorder(Node* p)
+{
+    cout<<p->val<<" ";
+    if(p->left!=NULL)
+        Preorder(p->left);
+    if(p->right != NULL)
+        Preorder(p->right);
+    return;
+}
+
+void Inorder(Node* p)
+{
+    if(p->left != NULL)
+        Inorder(p->left);
+    cout<<p->val<<" ";
+    if(p->right != NULL)
+        Inorder(p->right);
+}
+void Postorder(Node* p)
+{
+    if(p->left != NULL)
+        Postorder(p->left);
+    if(p->right != NULL)
+        Postorder(p->right);
+    cout<<p->val<<" ";
+}
+
+
+int main()
+{
+    Node *root = NULL;
+    for(int i=1;i<=5;i++)
+    {
+        int x;
+        cin>>x;
+        root = Insert(root,x);
+    }
+    Preorder(root);
+    cout<<endl;
+    Inorder(root);
+    cout<<endl;
+    Postorder(root);
+    cout<<Search(root,14)<<endl;
+    cout<<Search(root,10)<<endl;
+}
+
