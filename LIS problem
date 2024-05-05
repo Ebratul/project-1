@@ -1,10 +1,9 @@
+
 #include<bits/stdc++.h>
 using namespace std;
 #define int long long
 const int mod = 1e9 + 7;
-vector<int>a(1000);
-int dp[1000];
-int lis(int i)
+int lis(int i,vector<int>&dp,int a[])
 {
   if(dp[i]!=-1)return dp[i];
   int ans=1;
@@ -12,24 +11,25 @@ int lis(int i)
   {
     if(a[i]>a[j])
     {
-      ans=max(ans,lis(j)+1);
+      ans=max(ans,lis(j,dp,a)+1);
     }
   }
   return dp[i]=ans;
 }
 int32_t main()
 {
-  memset(dp,-1,sizeof(dp));
   int n;
   cin>>n;
+  int a[n];
   for(int i=0;i<n;i++)
   {
     cin>>a[i];
   }
+  vector<int>dp(n,-1);
   int ans=0;
   for(int i=0;i<n;i++)
   {
-    ans=max(ans,lis(i));
+    ans=max(ans,lis(i,dp,a));
   }
   cout<<ans;
 }
